@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<script src="FlashSwirl.js"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>FlashSwirl 算法库</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+			line-height: 1.8;
+			background: #f0f2f5;
+			min-height: 100vh;
+			padding: 0;
+			margin: 0;
+		}
+
+		.header-bar {
+			background: #00BFFF;
+			color: white;
+			padding: 15px 20px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		}
+
+		.header-bar h1 {
+			color: white;
+			margin: 0;
+			padding: 0;
+			border: none;
+			font-size: 1.5rem;
+		}
+
+		.github-link {
+			color: white;
+			text-decoration: none;
+			font-size: 14px;
+			display: flex;
+			align-items: center;
+			gap: 5px;
+		}
+
+		.github-link:hover {
+			text-decoration: underline;
+		}
+
+		.container {
+			background: white;
+			padding: 20px;
+			border-radius: 12px;
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+			width: 100%;
+			min-height: 100vh;
+			max-width: 1200px;
+			margin: 0 auto;
+		}
+
+		h1 {
+			color: #00BFFF;
+			margin: 0 0 25px 0;
+			padding-bottom: 15px;
+			border-bottom: 1px solid #eee;
+			font-size: 1.8rem;
+		}
+
+		.form-group {
+			margin-bottom: 20px;
+		}
+
+		.algorithm-group {
+			display: flex;
+			gap: 15px;
+			margin-bottom: 30px;
+			flex-wrap: wrap;
+		}
+
+		.algorithm-group .form-group {
+			flex: 1;
+			min-width: 200px;
+			margin-bottom: 0;
+		}
+
+		.plaintext-ciphertext-group {
+			display: flex;
+			gap: 20px;
+			margin-bottom: 20px;
+			flex-wrap: wrap;
+		}
+
+		.plaintext-ciphertext-group .form-group {
+			flex: 1;
+			min-width: 100%;
+			margin-bottom: 0;
+		}
+
+		@media (min-width: 768px) {
+			.plaintext-ciphertext-group .form-group {
+				min-width: calc(50% - 10px);
+			}
+		}
+
+		label {
+			display: block;
+			margin-bottom: 8px;
+			font-weight: 500;
+			color: #202124;
+			line-height: 1.2;
+			font-size: 0.95rem;
+		}
+
+		input,
+		textarea {
+			width: 100%;
+			padding: 12px 15px;
+			box-sizing: border-box;
+			border: 1px solid #dadce0;
+			border-radius: 8px;
+			font-size: 16px;
+			transition: border-color 0.2s;
+			background-color: #fff;
+		}
+
+		input:focus,
+		textarea:focus {
+			outline: none;
+			border-color: #00BFFF;
+			box-shadow: 0 0 0 2px rgba(0, 191, 255, 0.2);
+		}
+
+		select {
+			padding: 12px 15px;
+			box-sizing: border-box;
+			border: 1px solid #dadce0;
+			border-radius: 8px;
+			font-size: 16px;
+			height: 46px;
+			width: 100%;
+			background-color: #fff;
+			transition: border-color 0.2s;
+		}
+
+		select:focus {
+			outline: none;
+			border-color: #00BFFF;
+			box-shadow: 0 0 0 2px rgba(0, 191, 255, 0.2);
+		}
+
+		textarea {
+			min-height: 120px;
+			resize: vertical;
+		}
+
+		.controls-row {
+			display: flex;
+			justify-content: flex-start;
+			align-items: flex-end;
+			gap: 20px;
+			margin: 10px 0 30px 0;
+			flex-wrap: wrap;
+		}
+
+		.controls-row .algorithm-group {
+			flex: 1;
+			min-width: 300px;
+			margin-bottom: 0;
+			align-items: end;
+		}
+
+		.controls-row .button-group {
+			margin: 0;
+			white-space: nowrap;
+			display: flex;
+			gap: 10px;
+		}
+
+		button {
+			background: #00BFFF;
+			color: white;
+			border: none;
+			padding: 12px 24px;
+			border-radius: 8px;
+			cursor: pointer;
+			font-size: 16px;
+			font-weight: 500;
+			transition: background 0.3s, transform 0.1s;
+		}
+
+		button:hover {
+			background: #009ACD;
+		}
+
+		button:active {
+			transform: translateY(1px);
+		}
+
+		button:disabled {
+			background: #87CEEB;
+			cursor: not-allowed;
+		}
+
+		.result {
+			margin-top: 25px;
+			padding: 20px;
+			background: #f8f9fa;
+			border-radius: 8px;
+			border: 1px solid #e1e4e8;
+			white-space: pre-wrap;
+			word-wrap: break-word;
+			max-height: 300px;
+			overflow-y: auto;
+			font-family: monospace;
+		}
+
+		.info {
+			font-size: 0.9em;
+			color: #5f6368;
+			margin-top: 5px;
+			line-height: 1.5;
+		}
+
+		.input-with-button {
+			display: flex;
+			gap: 10px;
+			align-items: center;
+		}
+
+		@media (max-width: 768px) {
+			.header-bar {
+				flex-direction: column;
+				gap: 10px;
+				text-align: center;
+			}
+
+			.container {
+				padding: 15px;
+				border-radius: 0;
+			}
+
+			h1 {
+				font-size: 1.5rem;
+				margin-bottom: 20px;
+			}
+
+			button {
+				width: 100%;
+				margin-right: 0;
+				padding: 12px;
+			}
+
+			.controls-row {
+				flex-direction: column;
+				align-items: stretch;
+			}
+
+			.controls-row .button-group {
+				width: 100%;
+				flex-direction: column;
+			}
+
+			.input-with-button {
+				flex-direction: column;
+				align-items: stretch;
+			}
+
+			.input-with-button button {
+				width: 100%;
+			}
+		}
+
+		@media (min-width: 769px) {
+			.controls-row {
+				justify-content: space-between;
+			}
+
+			.controls-row .algorithm-group {
+				max-width: calc(50% - 10px);
+			}
+
+			.controls-row .button-group {
+				max-width: calc(50% - 10px);
+				width: 100%;
+			}
+
+			.controls-row .button-group button {
+				flex: 1;
+			}
+		}
+
+		.success {
+			color: #27ae60;
+		}
+
+		.error {
+			color: #e74c3c;
+		}
+
+		.warning {
+			color: #f39c12;
+		}
+
+		.hex-toggle {
+			display: inline-flex;
+			align-items: center;
+			margin-left: 10px;
+			gap: 5px;
+		}
+
+		.hex-toggle input[type="checkbox"] {
+			width: auto;
+			margin: 0;
+		}
+
+		.hex-toggle label {
+			display: inline;
+			margin: 0;
+			font-weight: normal;
+			color: #5f6368;
+			font-size: 0.9em;
+		}
+
+		.hex-info {
+			font-size: 0.8em;
+			color: #5f6368;
+			margin-top: 4px;
+			line-height: 1.4;
+		}
+
+		.label-with-hex-toggle {
+			display: flex;
+			align-items: center;
+			margin-bottom: 8px;
+		}
+
+		.label-with-hex-toggle>label {
+			margin-bottom: 0;
+			margin-right: 8px;
+		}
+
+		.hidden {
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="header-bar">
+		<h1>FlashSwirl 算法库</h1>
+		<a href="https://github.com/fzxx/FlashSwirl" target="_blank" class="github-link">
+			<svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor">
+				<path
+					d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+				</path>
+			</svg>
+			GitHub
+		</a>
+	</div>
+
+	<div class="container">
+		<div class="algorithm-group">
+			<div class="form-group">
+				<label for="algorithm">选择算法:</label>
+				<select id="algorithm">
+					<option value="stream">FlashSwirl-Stream (流加密/解密)</option>
+					<option value="aead" selected>FlashSwirl-AEAD (认证加密/解密)</option>
+					<option value="hash">FlashSwirl-Hash (哈希)</option>
+					<option value="hmac">FlashSwirl-HMAC (消息认证码)</option>
+					<option value="hkdf">FlashSwirl-HKDF (密钥派生)</option>
+					<option value="pbkdf2">FlashSwirl-PBKDF2 (密钥派生)</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="rounds">轮数:</label>
+				<select id="rounds">
+					<option value="8">8轮 (快速)</option>
+					<option value="20" selected>20轮 (标准)</option>
+				</select>
+			</div>
+		</div>
+
+		<!-- 加密/解密通用区域 (用于 stream 和 aead) -->
+		<div id="cryptoSection">
+			<div class="form-group">
+				<label for="key">密钥 (Hex，32字节，64字符):</label>
+				<div class="input-with-button">
+					<input type="text" id="key" placeholder="32字节密钥，64个十六进制字符" style="flex:1">
+					<button type="button" id="generateKeyBtn" style="width:auto;white-space:nowrap">生成密钥</button>
+				</div>
+				<div class="info">示例: 000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f</div>
+			</div>
+
+			<div class="form-group" id="nonceGroup">
+				<label for="nonce">Nonce (Hex，24字节，48字符):</label>
+				<div class="input-with-button">
+					<input type="text" id="nonce" placeholder="24字节Nonce，48个十六进制字符" style="flex:1">
+					<button type="button" id="generateNonceBtn" style="width:auto;white-space:nowrap">生成Nonce</button>
+				</div>
+				<div class="info" id="nonceInfo">示例: 000102030405060708090a0b0c0d0e0f1011121314151617</div>
+			</div>
+
+			<!-- 附加数据 (仅 AEAD 显示) -->
+			<div class="form-group" id="aadGroup">
+				<div class="label-with-hex-toggle">
+					<label for="aad">附加数据 (AAD):</label>
+					<div class="hex-toggle">
+						<input type="checkbox" id="aadHexToggle">
+						<label for="aadHexToggle">Hex</label>
+					</div>
+				</div>
+				<textarea id="aad" placeholder="输入附加数据（文本）..." style="min-height:60px"></textarea>
+				<div class="hex-info" id="aadHexInfo">支持文本输入，勾选十六进制后可输入Hex格式数据</div>
+			</div>
+
+			<div class="plaintext-ciphertext-group">
+				<div class="form-group">
+					<div class="label-with-hex-toggle">
+						<label for="plaintext">明文 / 输入数据:</label>
+						<div class="hex-toggle">
+							<input type="checkbox" id="plaintextHexToggle">
+							<label for="plaintextHexToggle">Hex</label>
+						</div>
+					</div>
+					<textarea id="plaintext" placeholder="输入要加密的文本...">这是一段测试文本。</textarea>
+					<div class="hex-info" id="plaintextHexInfo">支持文本输入，勾选十六进制后可输入Hex格式数据</div>
+				</div>
+
+				<div class="form-group">
+					<label for="ciphertext">输出 (Hex):</label>
+					<textarea id="ciphertext" placeholder="处理结果将以十六进制显示..."></textarea>
+				</div>
+			</div>
+
+			<div class="controls-row">
+				<div class="button-group">
+					<button id="encryptBtn">加密</button>
+					<button id="decryptBtn">解密</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- 哈希 / HMAC / HKDF 区域 -->
+		<div id="hashSection" class="hash-section hidden">
+			<!-- 密码输入 (HMAC) -->
+			<div class="form-group" id="hashKeyGroup">
+				<label for="hashKey">HMAC 密码 (UTF-8，任意长度):</label>
+				<input type="text" id="hashKey" placeholder="输入文本密码">
+				<div class="info" id="hashKeyInfo">密码将通过哈希生成密钥</div>
+			</div>
+
+			<!-- 消息 / 输入密钥材料 -->
+			<div class="form-group">
+				<label for="hashMessage">消息 / 输入密钥材料 / 密码 (UTF-8):</label>
+				<textarea id="hashMessage" placeholder="输入要处理的消息..." style="min-height:100px">这是要哈希的消息</textarea>
+			</div>
+
+			<!-- salt 和 info (仅 HKDF) -->
+			<div class="form-group" id="hkdfSaltGroup" style="display:none">
+				<label for="hkdfSalt">Salt (Hex，可选):</label>
+				<input type="text" id="hkdfSalt" placeholder="十六进制格式，可留空">
+			</div>
+			<div class="form-group" id="hkdfInfoGroup" style="display:none">
+				<label for="hkdfInfo">Info (UTF-8，可选):</label>
+				<input type="text" id="hkdfInfo" placeholder="上下文信息，可留空">
+			</div>
+
+			<!-- salt 和 迭代次数 (仅 PBKDF2) -->
+			<div class="form-group" id="pbkdf2SaltGroup" style="display:none">
+				<label for="pbkdf2Salt">Salt (Hex，可选):</label>
+				<input type="text" id="pbkdf2Salt" placeholder="十六进制格式，可留空">
+			</div>
+			<div class="form-group" id="pbkdf2IterationsGroup" style="display:none">
+				<label for="pbkdf2Iterations">迭代次数:</label>
+				<input type="number" id="pbkdf2Iterations" value="10000" min="1" max="10000000">
+				<div class="info">建议1万次，安全性与性能的权衡</div>
+			</div>
+
+			<!-- 输出长度 (对哈希固定32，对HKDF可变) -->
+			<div class="form-group">
+				<label for="hashLength">输出长度 (字节):</label>
+				<input type="number" id="hashLength" value="32" min="1" max="256">
+				<div class="info" id="hashLengthHint">Hash/HMAC固定32字节；HKDF可输出1-256字节</div>
+			</div>
+
+			<div class="controls-row">
+				<div class="button-group">
+					<button id="hashBtn">计算</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="result" id="result"></div>
+	</div>
+
+	<script>
+		(function () {
+			const CryptoUtils = {
+				randomBytes(length) {
+					if (typeof length !== 'number' || length <= 0 || !Number.isInteger(length))
+						throw new Error("长度必须是正整数");
+					const bytes = new Uint8Array(length);
+					if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+						crypto.getRandomValues(bytes);
+					} else {
+						throw new Error("当前环境不支持密码学安全的随机数生成");
+					}
+					return bytes;
+				},
+				toHex(bytes) {
+					if (!bytes || !(bytes instanceof Uint8Array)) throw new Error("输入必须是Uint8Array");
+					return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+				},
+				fromHex(hex) {
+					if (typeof hex !== 'string') throw new Error("输入必须是十六进制字符串");
+					const trimmed = hex.replace(/\s+/g, '');
+					if (trimmed.length % 2 !== 0) throw new Error("十六进制字符串长度必须是偶数");
+					if (trimmed.length === 0) return new Uint8Array(0);
+					const bytes = new Uint8Array(trimmed.length / 2);
+					for (let i = 0; i < trimmed.length; i += 2) {
+						const byteValue = parseInt(trimmed.slice(i, i + 2), 16);
+						if (isNaN(byteValue)) throw new Error("十六进制字符串包含无效字符");
+						bytes[i / 2] = byteValue;
+					}
+					return bytes;
+				},
+				stringToBytes(str) {
+					if (typeof str !== 'string') throw new Error("输入必须是字符串");
+					return new TextEncoder().encode(str);
+				},
+				bytesToString(bytes) {
+					if (!bytes || !(bytes instanceof Uint8Array)) throw new Error("输入必须是Uint8Array");
+					return new TextDecoder('utf-8').decode(bytes);
+				},
+				generateKey() {return this.randomBytes(32);},
+				generateNonce() {return this.randomBytes(24);},
+				isValidHex(hex) {
+					if (typeof hex !== 'string') return false;
+					const trimmed = hex.replace(/\s+/g, '');
+					if (trimmed.length === 0) return true;
+					return /^[0-9a-fA-F]+$/.test(trimmed) && trimmed.length % 2 === 0;
+				}
+			};
+
+			const el = {
+				algorithm: document.getElementById('algorithm'),
+				rounds: document.getElementById('rounds'),
+				cryptoSection: document.getElementById('cryptoSection'),
+				key: document.getElementById('key'),
+				nonce: document.getElementById('nonce'),
+				aadGroup: document.getElementById('aadGroup'),
+				aad: document.getElementById('aad'),
+				aadHexToggle: document.getElementById('aadHexToggle'),
+				aadHexInfo: document.getElementById('aadHexInfo'),
+				plaintext: document.getElementById('plaintext'),
+				plaintextHexToggle: document.getElementById('plaintextHexToggle'),
+				plaintextHexInfo: document.getElementById('plaintextHexInfo'),
+				ciphertext: document.getElementById('ciphertext'),
+				encryptBtn: document.getElementById('encryptBtn'),
+				decryptBtn: document.getElementById('decryptBtn'),
+				generateKeyBtn: document.getElementById('generateKeyBtn'),
+				generateNonceBtn: document.getElementById('generateNonceBtn'),
+				hashSection: document.getElementById('hashSection'),
+				hashKeyGroup: document.getElementById('hashKeyGroup'),
+				hashKey: document.getElementById('hashKey'),
+				hashKeyInfo: document.getElementById('hashKeyInfo'),
+				hashMessage: document.getElementById('hashMessage'),
+				hkdfSaltGroup: document.getElementById('hkdfSaltGroup'),
+				hkdfSalt: document.getElementById('hkdfSalt'),
+				hkdfInfoGroup: document.getElementById('hkdfInfoGroup'),
+				hkdfInfo: document.getElementById('hkdfInfo'),
+				pbkdf2SaltGroup: document.getElementById('pbkdf2SaltGroup'),
+				pbkdf2Salt: document.getElementById('pbkdf2Salt'),
+				pbkdf2IterationsGroup: document.getElementById('pbkdf2IterationsGroup'),
+				pbkdf2Iterations: document.getElementById('pbkdf2Iterations'),
+				hashLength: document.getElementById('hashLength'),
+				hashLengthHint: document.getElementById('hashLengthHint'),
+				hashBtn: document.getElementById('hashBtn'),
+				result: document.getElementById('result')
+			};
+
+			let isProcessing = false;
+
+			function showResult(msg, type = 'success') {
+				el.result.textContent = msg;
+				el.result.className = `result ${type}`;
+			}
+
+			function setProcessing(processing) {
+				isProcessing = processing;
+				const btns = [el.encryptBtn, el.decryptBtn, el.hashBtn, el.generateKeyBtn, el.generateNonceBtn];
+				btns.forEach(b => {if (b) b.disabled = processing;});
+				el.algorithm.disabled = processing;
+				if (processing) showResult('⏳ 处理中...', 'warning');
+			}
+
+			function updateUIMode() {
+				const algo = el.algorithm.value;
+				el.cryptoSection.classList.add('hidden');
+				el.hashSection.classList.add('hidden');
+
+				if (algo === 'stream' || algo === 'aead') {
+					el.cryptoSection.classList.remove('hidden');
+					el.aadGroup.style.display = (algo === 'aead') ? 'block' : 'none';
+				} else {
+					el.hashSection.classList.remove('hidden');
+					if (algo === 'hash') {
+						el.hashKeyGroup.style.display = 'none';
+						el.hkdfSaltGroup.style.display = 'none';
+						el.hkdfInfoGroup.style.display = 'none';
+						el.pbkdf2SaltGroup.style.display = 'none';
+						el.pbkdf2IterationsGroup.style.display = 'none';
+						el.hashLength.disabled = true;
+						el.hashLength.value = 32;
+						el.hashLengthHint.innerText = 'Hash固定输出32字节';
+					} else if (algo === 'hmac') {
+						el.hashKeyGroup.style.display = 'block';
+						el.hkdfSaltGroup.style.display = 'none';
+						el.hkdfInfoGroup.style.display = 'none';
+						el.pbkdf2SaltGroup.style.display = 'none';
+						el.pbkdf2IterationsGroup.style.display = 'none';
+						el.hashLength.disabled = true;
+						el.hashLength.value = 32;
+						el.hashLengthHint.innerText = 'HMAC固定输出32字节';
+					} else if (algo === 'hkdf') {
+						el.hashKeyGroup.style.display = 'none';
+						el.hkdfSaltGroup.style.display = 'block';
+						el.hkdfInfoGroup.style.display = 'block';
+						el.pbkdf2SaltGroup.style.display = 'none';
+						el.pbkdf2IterationsGroup.style.display = 'none';
+						el.hashLength.disabled = false;
+						el.hashLength.min = 1;
+						el.hashLength.max = 8160;
+						el.hashLengthHint.innerText = 'HKDF输出长度 1-8160 字节';
+					} else if (algo === 'pbkdf2') {
+						el.hashKeyGroup.style.display = 'none';
+						el.hkdfSaltGroup.style.display = 'none';
+						el.hkdfInfoGroup.style.display = 'none';
+						el.pbkdf2SaltGroup.style.display = 'block';
+						el.pbkdf2IterationsGroup.style.display = 'block';
+						el.hashLength.disabled = false;
+						el.hashLength.min = 1;
+						el.hashLength.max = 8160;
+						el.hashLengthHint.innerText = 'PBKDF2输出长度 1-8160 字节';
+					}
+				}
+			}
+
+			function inputToBytes(value, isHex, fieldName) {
+				if (!value) return new Uint8Array(0);
+				try {
+					return isHex ? CryptoUtils.fromHex(value) : CryptoUtils.stringToBytes(value);
+				} catch (e) {
+					throw new Error(`${fieldName}转换失败: ${e.message}`);
+				}
+			}
+
+			async function handleEncrypt() {
+				if (isProcessing) return;
+				setProcessing(true);
+				try {
+					const algo = el.algorithm.value;
+					if (algo !== 'stream' && algo !== 'aead') throw new Error('当前模式不支持加密操作');
+
+					const keyHex = el.key.value.trim();
+					const nonceHex = el.nonce.value.trim();
+					if (!keyHex || !nonceHex) throw new Error('密钥和Nonce不能为空');
+					const key = CryptoUtils.fromHex(keyHex);
+					const nonce = CryptoUtils.fromHex(nonceHex);
+					if (key.length !== 32) throw new Error('密钥必须为32字节 (64个十六进制字符)');
+					if (nonce.length !== 24) throw new Error('Nonce必须为24字节 (48个十六进制字符)');
+
+					const aadRaw = el.aad.value.trim();
+					const aad = (algo === 'aead') ? inputToBytes(aadRaw, el.aadHexToggle.checked, '附加数据') : new Uint8Array(0);
+					const ptRaw = el.plaintext.value.trim();
+					const plain = inputToBytes(ptRaw, el.plaintextHexToggle.checked, '明文');
+
+					let result;
+					result = FlashSwirl.encrypt(algo, key, nonce, plain, aad, parseInt(el.rounds.value));
+
+					el.ciphertext.value = CryptoUtils.toHex(result);
+					const msg = (algo === 'stream')
+						? `✅ 流加密成功 (无认证)\n输出长度: ${result.length} 字节`
+						: `✅ AEAD加密成功，包含16字节认证标签\n总长度: ${result.length} 字节`;
+					showResult(msg, 'success');
+				} catch (e) {
+					showResult(`❌ 加密失败: ${e.message}`, 'error');
+				} finally {
+					setProcessing(false);
+				}
+			}
+
+			async function handleDecrypt() {
+				if (isProcessing) return;
+				setProcessing(true);
+				try {
+					const algo = el.algorithm.value;
+					if (algo !== 'stream' && algo !== 'aead') throw new Error('当前模式不支持解密操作');
+
+					const keyHex = el.key.value.trim();
+					const nonceHex = el.nonce.value.trim();
+					const cipherHex = el.ciphertext.value.trim();
+					if (!keyHex || !nonceHex) throw new Error('密钥和Nonce不能为空');
+					if (!cipherHex) throw new Error('请输入输出数据 (密文)');
+
+					const key = CryptoUtils.fromHex(keyHex);
+					const nonce = CryptoUtils.fromHex(nonceHex);
+					if (key.length !== 32) throw new Error('密钥必须为32字节');
+					if (nonce.length !== 24) throw new Error('Nonce必须为24字节');
+
+					const aadRaw = el.aad.value.trim();
+					const aad = (algo === 'aead') ? inputToBytes(aadRaw, el.aadHexToggle.checked, '附加数据') : new Uint8Array(0);
+					const cipherWithTag = CryptoUtils.fromHex(cipherHex);
+
+					const plain = FlashSwirl.decrypt(algo, key, nonce, cipherWithTag, aad, parseInt(el.rounds.value));
+
+					if (el.plaintextHexToggle.checked) {
+						el.plaintext.value = CryptoUtils.toHex(plain);
+					} else {
+						try {
+							el.plaintext.value = CryptoUtils.bytesToString(plain);
+						} catch (e) {
+							el.plaintext.value = CryptoUtils.toHex(plain);
+							showResult(`⚠️ 解密成功但无法显示为文本，已输出Hex`, 'warning');
+						}
+					}
+					showResult(`✅ ${algo === 'stream' ? '流' : 'AEAD'}解密成功${algo === 'aead' ? '，标签验证通过' : ''}`, 'success');
+				} catch (e) {
+					showResult(`❌ 解密失败: ${e.message}`, 'error');
+				} finally {
+					setProcessing(false);
+				}
+			}
+
+			async function handleHash() {
+				if (isProcessing) return;
+				setProcessing(true);
+				try {
+					const algo = el.algorithm.value;
+					if (!['hash', 'hmac', 'hkdf', 'pbkdf2'].includes(algo)) throw new Error('当前模式不支持哈希操作');
+
+					const msgRaw = el.hashMessage.value;
+					if (!msgRaw) throw new Error('消息不能为空');
+					const msgBytes = CryptoUtils.stringToBytes(msgRaw);
+
+					let resultBytes = null;
+
+					if (algo === 'hash') {
+						resultBytes = FlashSwirl.hash(msgBytes, parseInt(el.rounds.value));
+					} else if (algo === 'hmac') {
+						const password = el.hashKey.value;
+						const key = CryptoUtils.stringToBytes(password);
+						resultBytes = FlashSwirl.hmac(key, msgBytes, parseInt(el.rounds.value));
+					} else if (algo === 'hkdf') {
+						const masterKey = msgBytes;
+						const saltHex = el.hkdfSalt.value.trim();
+						const salt = saltHex ? CryptoUtils.fromHex(saltHex) : null;
+						const infoStr = el.hkdfInfo.value.trim();
+						const info = infoStr ? CryptoUtils.stringToBytes(infoStr) : new Uint8Array(0);
+						const outLen = parseInt(el.hashLength.value);
+						if (isNaN(outLen) || outLen < 1 || outLen > 8160) throw new Error('输出长度须为1-8160');
+						resultBytes = FlashSwirl.hkdf(masterKey, salt, info, outLen, parseInt(el.rounds.value));
+					} else if (algo === 'pbkdf2') {
+						const password = msgBytes;
+						const saltHex = el.pbkdf2Salt.value.trim();
+						const salt = saltHex ? CryptoUtils.fromHex(saltHex) : new Uint8Array(0);
+						const iterations = parseInt(el.pbkdf2Iterations.value);
+						if (isNaN(iterations) || iterations < 1) throw new Error('迭代次数必须大于0');
+						const outLen = parseInt(el.hashLength.value);
+						if (isNaN(outLen) || outLen < 1 || outLen > 8160) throw new Error('输出长度须为1-8160');
+						resultBytes = FlashSwirl.pbkdf2(password, salt, iterations, outLen, parseInt(el.rounds.value));
+					}
+
+					if (resultBytes) {
+						const hexResult = CryptoUtils.toHex(resultBytes);
+						el.ciphertext.value = hexResult;
+						const messagePreview = msgRaw.length > 50 ? msgRaw.substring(0, 50) + '...' : msgRaw;
+						showResult(`✅ ${algo.toUpperCase()} 成功\n消息: ${messagePreview}\n哈希值: ${hexResult}\n长度: ${resultBytes.length} 字节`, 'success');
+					}
+				} catch (e) {
+					showResult(`❌ 计算失败: ${e.message}`, 'error');
+				} finally {
+					setProcessing(false);
+				}
+			}
+
+			function generateKey() {
+				try {
+					const key = CryptoUtils.generateKey();
+					el.key.value = CryptoUtils.toHex(key);
+					showResult('✅ 已生成32字节密钥', 'success');
+				} catch (e) {
+					showResult(`❌ 生成失败: ${e.message}`, 'error');
+				}
+			}
+			function generateNonce() {
+				try {
+					const nonce = CryptoUtils.generateNonce();
+					el.nonce.value = CryptoUtils.toHex(nonce);
+					showResult('✅ 已生成24字节Nonce', 'success');
+				} catch (e) {
+					showResult(`❌ 生成失败: ${e.message}`, 'error');
+				}
+			}
+
+			function updateHexToggleText() {
+				const aadIsHex = el.aadHexToggle.checked;
+				const plainIsHex = el.plaintextHexToggle.checked;
+				el.aadHexInfo.textContent = aadIsHex ? '当前为十六进制输入模式，请输入Hex格式数据' : '支持文本输入，勾选十六进制后可输入Hex格式数据';
+				el.aad.placeholder = aadIsHex ? '输入附加数据（十六进制）...' : '输入附加数据（文本）...';
+				el.plaintextHexInfo.textContent = plainIsHex ? '当前为十六进制输入模式，请输入Hex格式数据' : '支持文本输入，勾选十六进制后可输入Hex格式数据';
+				el.plaintext.placeholder = plainIsHex ? '输入要加密的数据（十六进制）...' : '输入要加密的文本...';
+			}
+
+			function init() {
+				el.algorithm.addEventListener('change', updateUIMode);
+				el.aadHexToggle.addEventListener('change', updateHexToggleText);
+				el.plaintextHexToggle.addEventListener('change', updateHexToggleText);
+				el.encryptBtn.addEventListener('click', handleEncrypt);
+				el.decryptBtn.addEventListener('click', handleDecrypt);
+				el.hashBtn.addEventListener('click', handleHash);
+				el.generateKeyBtn.addEventListener('click', generateKey);
+				el.generateNonceBtn.addEventListener('click', generateNonce);
+
+				updateUIMode();
+				updateHexToggleText();
+
+				if (!el.key.value) {
+					el.key.value = '000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f';
+				}
+				if (!el.nonce.value) {
+					el.nonce.value = '000102030405060708090a0b0c0d0e0f1011121314151617';
+				}
+				if (!el.hashKey.value) {
+					el.hashKey.value = '000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f';
+				}
+			}
+
+			init();
+		})();
+	</script>
+</body>
+
+</html>
