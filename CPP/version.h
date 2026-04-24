@@ -1,0 +1,22 @@
+#ifndef VERSION_H
+#define VERSION_H
+
+#define VER_MAJOR 1
+#define VER_MINOR 2
+#define VER_PATCH 0
+#define VER_BUILD 0
+
+#define VER_FILEVERSION VER_MAJOR,VER_MINOR,VER_PATCH,VER_BUILD
+#define VER_PRODUCTVERSION VER_MAJOR,VER_MINOR,VER_PATCH,VER_BUILD
+
+#define VER_FILEVERSION_STR "1.1.0.0"
+#define VER_PRODUCTVERSION_STR "1.1.0.0"
+
+#define VER_COMPANY_NAME "风之暇想"
+#define VER_FILE_DESCRIPTION "FlashSwirl 闪旋"
+#define VER_INTERNAL_NAME "FlashSwirl"
+#define VER_LEGAL_COPYRIGHT "Copyright (C) 风之暇想"
+#define VER_ORIGINAL_FILENAME "FlashSwirl"
+#define VER_PRODUCT_NAME "FlashSwirl 闪旋"
+
+#endif
